@@ -5,7 +5,7 @@
 // @author      Jerryh001
 // @icon        http://www.google.com/s2/favicons?domain=youtube.com
 // @match       https://www.youtube.com/*
-// @version     0.1
+// @version     0.1.1
 // @run-at      document-start
 // @grant       GM_addStyle
 // @namespace   https://github.com/Jerryh001
@@ -18,7 +18,7 @@ let installed = false;
 // Install or uninstall full-size player page stylesheet if needed
 function startScript() {
     const isWatchPage = inWatchPage();
-    if(!isWatchPage && installed) {
+    if (!isWatchPage && installed) {
         uninstall();
     } else if (isWatchPage && !installed) {
         install();
@@ -34,7 +34,8 @@ function install() {
 }
 
 function uninstall() {
-    $("ytd-app").css("--ytd-masthead-height", "")
+    $("ytd-app").css("--ytd-masthead-height", "");
+    $("ytd-app").attr("masthead-hidden", null);
     $(document).off("scroll", updateMastheadContainer);
     $(document).off("fullscreenchange", updateMastheadContainer);
     installed = false;
@@ -51,7 +52,7 @@ function updateMastheadContainer() {
 }
 
 function inWatchPage() {
-	return location.href.startsWith("https://www.youtube.com/watch?");
+    return location.href.startsWith("https://www.youtube.com/watch?");
 }
 
 $(() => {
@@ -59,4 +60,4 @@ $(() => {
         startScript();
     }
     $(window).on("yt-page-data-updated", startScript);
-})
+});

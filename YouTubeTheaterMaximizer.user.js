@@ -5,7 +5,7 @@
 // @author      Jerryh001
 // @icon        http://www.google.com/s2/favicons?domain=youtube.com
 // @match       https://www.youtube.com/*
-// @version     0.1.1
+// @version     0.2.0
 // @run-at      document-start
 // @grant       GM_addStyle
 // @namespace   https://github.com/Jerryh001
@@ -27,7 +27,12 @@ function startScript() {
 }
 
 function install() {
-    GM_addStyle(`#player-theater-container { max-height: 100vh !important; }`);
+    GM_addStyle(`
+        #player-theater-container {
+            min-height: 0 !important;
+            max-height: 100vh !important;
+        }
+    `);
     $(document).on("scroll", updateMastheadContainer);
     $(document).on("fullscreenchange", updateMastheadContainer);
     installed = true;

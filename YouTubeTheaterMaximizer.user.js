@@ -5,12 +5,12 @@
 // @author      Jerryh001
 // @icon        http://www.google.com/s2/favicons?domain=youtube.com
 // @match       https://www.youtube.com/*
-// @version     0.2.0
+// @version     0.2.1
 // @run-at      document-start
 // @grant       GM_addStyle
 // @namespace   https://github.com/Jerryh001
 // @homepageURL https://github.com/Jerryh001/YouTubeTheaterMaximizer
-// @require     https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.slim.min.js
+// @require     https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js
 // ==/UserScript==
 
 let installed = false;
@@ -57,12 +57,12 @@ function updateMastheadContainer() {
 }
 
 function inWatchPage() {
-    return location.href.startsWith("https://www.youtube.com/watch?");
+    return location.pathname == "/watch";
 }
 
 $(() => {
     if (window.self === window.top) {
         startScript();
     }
-    $(window).on("yt-page-data-updated", startScript);
+    $(window).on("yt-navigate-finish", startScript);
 });

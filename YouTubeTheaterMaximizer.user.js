@@ -5,7 +5,7 @@
 // @author      Jerryh001
 // @icon        http://www.google.com/s2/favicons?domain=youtube.com
 // @match       https://www.youtube.com/*
-// @version     0.2.1
+// @version     0.2.2
 // @run-at      document-start
 // @grant       GM_addStyle
 // @namespace   https://github.com/Jerryh001
@@ -28,7 +28,7 @@ function startScript() {
 
 function install() {
     GM_addStyle(`
-        #player-theater-container {
+        #player-wide-container {
             min-height: 0 !important;
             max-height: 100vh !important;
         }

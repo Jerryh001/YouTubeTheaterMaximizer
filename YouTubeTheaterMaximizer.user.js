@@ -5,12 +5,12 @@
 // @author      Jerryh001
 // @icon        http://www.google.com/s2/favicons?domain=youtube.com
 // @match       https://www.youtube.com/*
-// @version     0.2.2
+// @version     0.2.3
 // @run-at      document-start
 // @grant       GM_addStyle
 // @namespace   https://github.com/Jerryh001
 // @homepageURL https://github.com/Jerryh001/YouTubeTheaterMaximizer
-// @require     https://cdn.jsdelivr.net/npm/jquery@3.6.1/dist/jquery.slim.min.js
+// @require     https://code.jquery.com/jquery-3.7.0.slim.min.js
 // ==/UserScript==
 
 let installed = false;
@@ -28,7 +28,7 @@ function startScript() {
 
 function install() {
     GM_addStyle(`
-        #player-wide-container {
+        .ytd-watch-flexy {
             min-height: 0 !important;
             max-height: 100vh !important;
         }

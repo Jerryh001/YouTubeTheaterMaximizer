@@ -3,14 +3,14 @@
 // @description Maximizes the YouTube player to fill the entire browser viewport when in theater mode.
 // @license     MIT
 // @author      Jerryh001
-// @icon        http://www.google.com/s2/favicons?domain=youtube.com
+// @icon        http://www.google.com/s2/favicons?sz=64&domain=youtube.com
 // @match       https://www.youtube.com/*
-// @version     0.2.3
-// @run-at      document-start
+// @version     0.3.0
+// @run-at      document-end
 // @grant       GM_addStyle
 // @namespace   https://github.com/Jerryh001
 // @homepageURL https://github.com/Jerryh001/YouTubeTheaterMaximizer
-// @require     https://code.jquery.com/jquery-3.7.0.slim.min.js
+// @noframes
 // ==/UserScript==
 
 let installed = false;
@@ -28,31 +28,40 @@ function startScript() {
 
 function install() {
     GM_addStyle(`
-        .ytd-watch-flexy {
+        #full-bleed-container {
             min-height: 0 !important;
             max-height: 100vh !important;
         }
+        #full-bleed-container .ytp-size-button {
+            display: none !important;
+        }
     `);
-    $(document).on("scroll", updateMastheadContainer);
-    $(document).on("fullscreenchange", updateMastheadContainer);
+    document.addEventListener('scroll', updateMastheadContainer);
+    document.addEventListener('fullscreenchange', updateMastheadContainer);
     installed = true;
 }
 
 function uninstall() {
-    $("ytd-app").css("--ytd-masthead-height", "");
-    $("ytd-app").attr("masthead-hidden", null);
-    $(document).off("scroll", updateMastheadContainer);
-    $(document).off("fullscreenchange", updateMastheadContainer);
+    const ytdApp = document.querySelector("ytd-app");
+    if (ytdApp) {
+        ytdApp.style.setProperty("--ytd-masthead-height", "");
+        ytdApp.removeAttribute("masthead-hidden");
+    }
+
+    document.removeEventListener('scroll', updateMastheadContainer);
+    document.removeEventListener('fullscreenchange', updateMastheadContainer);
     installed = false;
 }
 
 function updateMastheadContainer() {
-    const ytdApp = $("ytd-app");
-    ytdApp.css("--ytd-masthead-height", 0);
-    if ($(document).scrollTop() == 0) {
-        ytdApp.attr("masthead-hidden", true);
-    } else {
-        ytdApp.attr("masthead-hidden", null);
+    const ytdApp = document.querySelector("ytd-app");
+    if (ytdApp) {
+        ytdApp.style.setProperty("--ytd-masthead-height", "0");
+        if (document.documentElement.scrollTop === 0) {
+            ytdApp.setAttribute("masthead-hidden", "true");
+        } else {
+            ytdApp.removeAttribute("masthead-hidden");
+        }
     }
 }
 
@@ -60,9 +69,6 @@ function inWatchPage() {
     return location.pathname == "/watch";
 }
 
-$(() => {
-    if (window.self === window.top) {
-        startScript();
-    }
-    $(window).on("yt-navigate-finish", startScript);
-});
+startScript();
+
+window.addEventListener("yt-navigate-finish", startScript);
